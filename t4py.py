@@ -1,9 +1,15 @@
 import ctypes
 
 class t4py:
-    libt4 = None
     dll_path = ''
 
+    account = ''
+    passwd = ''
+
+    ca_path = ''
+    ca_pwd = ''
+
+    libt4 = None
     to_utf8 = False
 
     def __init__(self, dll_path):
@@ -11,14 +17,31 @@ class t4py:
             self.libt4=ctypes.WinDLL(dll_path)
         except:
             print "Open T4 DLL error!"
+        else:
+            print "Open T4 DLL success!"
+            self.dll_path = dll_path
 
-    def init_t4(self, sino_id, sino_pwd):
+    def init_t4(self):
         init_t4=self.libt4.init_t4
         init_t4.argtypes = [ctypes.c_char_p]*3
         init_t4.restype = ctypes.c_char_p
-        ret = init_t4(sino_id,sino_pwd,self.dll_path).decode('big5')
+        ret = init_t4(self.account, self.passwd, '').decode('big5')
         if self.to_utf8: ret = ret.encode('utf8')
         return ret
+
+    def add_fo_acc_ca(self, ca_path, ca_pwd):
+        """
+        add_acc_ca=self.libt4.add_acc_ca
+        add_acc_ca.argtypes = [ctypes.c_char_p]*5
+        add_acc_ca.restype = ctypes.c_char_p
+
+        branch, account = self.get_fo_branch_account()
+        branch_p  = ctypes.c_char_p(branch)
+        account_p = ctypes.c_char_p(account)
+
+        ret = add_fo_acc_ca()
+        """
+        return 1
 
     def show_version(self):
         show_version=self.libt4.show_version

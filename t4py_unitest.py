@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
-
+import ctypes
 import unittest
 import t4py
 
-t4_dll_path = 'c:/T4/t4.dll'
-account = ''
-passwd = ''
+t4 = None
 
 class Test_t4py(unittest.TestCase):
     def test_1_load_dll(self):
-        self.assertTrue(isinstance(t4,t4py.t4py))
+        t4.acc_path = ''
+        self.assertTrue(isinstance(t4.libt4 , ctypes.WinDLL))
 
     def test_2_init_t4(self):
-        ret=t4.init_t4(account,passwd)
+        t4.account = ''
+        t4.passwd = ''
+        ret=t4.init_t4()
         print ret
 
     def test_3_show_version(self):
@@ -35,12 +36,9 @@ class Test_t4py(unittest.TestCase):
         ret=t4.logout_t4()
         self.assertEqual(ret, 0)
 
-
-
-
 if __name__ == '__main__':
-    t4 = t4py.t4py(t4_dll_path)
+    t4 = t4py.t4py('.//sinopac//t4.dll')
 
     unittest.TestLoader.sortTestMethodsUsing = None
     suite = unittest.TestLoader().loadTestsFromTestCase(Test_t4py)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    unittest.TextTestRunner(verbosity=1,failfast=True).run(suite)
